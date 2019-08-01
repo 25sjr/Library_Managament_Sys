@@ -1,0 +1,108 @@
+create database lib;
+use lib;
+
+Create Table LMS_BOOK_ISSUE(
+BOOK_ISSUE_NO int not null auto_increment PRIMARY KEY,
+MEMBER_ID varchar(10),
+BOOK_CODE VARCHAR(10),
+DATE_ISSUE DATE,
+DATE_RETURN DATE,
+DATE_RETURNED DATE,
+BOOK_ISSUE_STATUS VARCHAR(20),
+FINE_RANGE VARCHAR(3)
+);
+
+ALTER TABLE lms_book_details
+MODIFY BOOK_CODE int not null auto_increment;
+
+alter table LMS_BOOK_ISSUE
+add memFk int;
+
+alter table LMS_BOOK_ISSUE
+add foreign key (memFk) references lms_members(MEMBER_ID);
+
+alter table LMS_BOOK_ISSUE
+modify BidFk varchar(10);
+
+alter table LMS_BOOK_ISSUE
+add foreign key (BidFk) references lms_book_details(BOOK_CODE);
+
+alter table LMS_BOOK_ISSUE
+add FrFk int(11);
+
+alter table LMS_BOOK_ISSUE
+add foreign key (FrFk) references lms_fine_details(FINE_RANGE);
+
+alter table lms_book_details
+add SidFk int(11);
+
+alter table lms_book_details
+add foreign key (SidFk) references lms_supplier_details(SUPPLIER_ID);
+
+
+
+
+
+SELECT * FROM lms_book_issue;
+
+
+
+INSERT INTO lms_book_issue SET  MEMBER_ID='MEM1',BOOK_CODE='1001',DATE_ISSUE=20190702,DATE_RETURN=20190710,DATE_RETURNED=20190709,
+BOOK_ISSUE_STATUS='Y',FINE_RANGE=3;
+INSERT INTO lms_book_issue SET  MEMBER_ID='MEM2',BOOK_CODE='1002',DATE_ISSUE=20190921,DATE_RETURN=20190921,DATE_RETURNED=20190921,
+BOOK_ISSUE_STATUS='N',FINE_RANGE=3;
+INSERT INTO lms_book_issue SET  MEMBER_ID='MEM3',BOOK_CODE='1003',DATE_ISSUE=20190820,DATE_RETURN=20190921,DATE_RETURNED=20190921,
+BOOK_ISSUE_STATUS='Y',FINE_RANGE=3;
+INSERT INTO lms_book_issue SET  MEMBER_ID='MEM4',BOOK_CODE='1004',DATE_ISSUE=20190922,DATE_RETURN=20190921,DATE_RETURNED=20190921,
+BOOK_ISSUE_STATUS='Y',FINE_RANGE=3;
+
+SELECT * FROM lms_book_issue;
+
+create table LMS_BOOK_DETAILS
+(
+	BOOK_CODE VARCHAR(10),
+    BOOK_TITLE VARCHAR(50),
+    CATEGORY VARCHAR(15),
+    AUTHOR VARCHAR(30),
+    PUBLICATION VARCHAR(3),
+    PUBLISH_DATE DATE,
+    BOOK_EDITION INT,
+    PRICE INT,
+    RACK_NUM VARCHAR(3),
+    DATE_ARRIVAL DATE,
+    SUPPLIER_ID int(3),
+    PRIMARY KEY (BOOK_CODE)
+);
+/*LMS_SUPPLIE_DETAILS*/
+CREATE TABLE LMS_SUPPLIER_DETAILS
+(
+	SUPPLIER_ID int(3) auto_increment,
+    SUPPLIER_NAME VARCHAR(30),
+    ADDRESS VARCHAR(50),
+    CONTACT VARCHAR(20),
+    EMAIL VARCHAR(30),
+    PRIMARY KEY(SUPPLIER_ID)
+);
+alter table LMS_BOOK_DETAILS
+add foreign key (SUPPLIER_ID) references LMS_SUPPLIER_DETAILS(SUPPLIER_ID);
+drop table LMS_BOOK_DETAILS;
+select *from LMS_BOOK_DETAILS;
+select *from LMS_SUPPLIER_DETAILS;
+
+create table LMS_members
+(
+MEMBER_ID int(20) not null auto_increment,
+MEMBER_NAME VARCHAR(30),
+CITY VARCHAR(20),
+DATE_REGISTER DATE,
+DATE_EXPRE DATE,
+MEMBERSHIP_STATUS VARCHAR(15),
+PRIMARY KEY (MEMBER_ID)
+);
+create table LMS_FINE_DETAILS
+(
+
+FINE_RANGE int auto_increment,
+FINE_AMOUNT INT,
+PRIMARY KEY (FINE_RANGE)
+);
